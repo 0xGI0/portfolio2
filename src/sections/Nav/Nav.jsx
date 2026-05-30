@@ -21,7 +21,7 @@ function Nav() {
     <header className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
       <a href="#hero" className={`${styles.logo} hover`} aria-label="Zum Seitenanfang">
         <span className={styles.dot} />
-        QG1o
+        0xGI0
       </a>
       <nav className={styles.links}>
         {LINKS.map((l) => (

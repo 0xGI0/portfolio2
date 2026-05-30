@@ -29,7 +29,7 @@ function Hero() {
         </p>
 
         <h1 className={styles.name}>
-          <span className={styles.gradient} data-text="QG1o">QG1o</span>
+          <span className={styles.gradient} data-text="0xGI0">0xGI0</span>
           <span className={styles.alias}>aka Gio</span>
         </h1>
 
@@ -57,13 +57,13 @@ function Hero() {
         </div>
 
         <div className={styles.socials}>
-          <a href="https://x.com/QG1o_" target="_blank" rel="noopener noreferrer" className="hover" aria-label="X (Twitter) Profil von QG1o">
+          <a href="https://x.com/QG1o_" target="_blank" rel="noopener noreferrer" className="hover" aria-label="X (Twitter) Profil von 0xGI0">
             <img src={twitterIcon} alt="X (Twitter)" />
           </a>
-          <a href="https://github.com/QG1o" target="_blank" rel="noopener noreferrer" className="hover" aria-label="GitHub Profil von QG1o">
+          <a href="https://github.com/QG1o" target="_blank" rel="noopener noreferrer" className="hover" aria-label="GitHub Profil von 0xGI0">
             <img src={githubIcon} alt="GitHub" />
           </a>
-          <a href="https://www.linkedin.com/in/qg1o/" target="_blank" rel="noopener noreferrer" className="hover" aria-label="LinkedIn Profil von QG1o">
+          <a href="https://www.linkedin.com/in/qg1o/" target="_blank" rel="noopener noreferrer" className="hover" aria-label="LinkedIn Profil von 0xGI0">
             <img src={linkedinIcon} alt="LinkedIn" />
           </a>
         </div>
@@ -84,7 +84,7 @@ function Hero() {
             <span className={styles.ringA} />
             <span className={styles.ringB} />
             <span className={styles.halo} />
-            <img className={styles.avatar} src={heroImg} alt="Porträt von QG1o" />
+            <img className={styles.avatar} src={heroImg} alt="Porträt von 0xGI0" />
           </div>
         </Magnetic>
       </div>

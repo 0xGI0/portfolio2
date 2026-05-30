@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './LoadingScreen.module.css';
 
-const TITLE = 'QG1o';
+const TITLE = '0xGI0';
 const GLYPHS = '!<>-_\\/[]{}=+*^?#01ABCXZ';
 
 function LoadingScreen() {
@@ -58,7 +58,7 @@ function LoadingScreen() {
           <span />
           <span />
           <span />
-          <p className={styles.path}>~/qg1o/portfolio</p>
+          <p className={styles.path}>~/0xgi0/portfolio</p>
         </div>
         <div className={styles.body}>
           <p className={styles.line}>
