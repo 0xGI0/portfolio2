@@ -1,59 +1,96 @@
 import { useEffect, useState } from 'react';
 import styles from './LoadingScreen.module.css';
 
+const TITLE = 'QG1o';
+const GLYPHS = '!<>-_\\/[]{}=+*^?#01ABCXZ';
+
 function LoadingScreen() {
-    const [isVisible, setIsVisible] = useState(true);
-    const [progress, setProgress] = useState(0);
+  const [visible, setVisible] = useState(true);
+  const [done, setDone] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [display, setDisplay] = useState('????');
 
-    useEffect(() => {
-        // Simulate loading progress
-        const progressInterval = setInterval(() => {
-            setProgress(prev => {
-                if (prev >= 100) {
-                    clearInterval(progressInterval);
-                    return 100;
-                }
-                return prev + Math.random() * 15;
-            });
-        }, 150);
+  useEffect(() => {
+    // Lock scroll while loading
+    document.body.style.overflow = 'hidden';
 
-        // Hide loading screen after completion
-        const timer = setTimeout(() => {
-            setIsVisible(false);
-        }, 2000);
+    const start = performance.now();
+    const duration = 2000;
+    let raf;
 
-        return () => {
-            clearInterval(progressInterval);
-            clearTimeout(timer);
-        };
-    }, []);
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      setProgress(Math.round(t * 100));
 
-    if (!isVisible) return null;
+      const reveal = Math.floor(t * TITLE.length);
+      let out = '';
+      for (let i = 0; i < TITLE.length; i++) {
+        out += i < reveal || t === 1
+          ? TITLE[i]
+          : GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+      }
+      setDisplay(out);
 
-    return (
-        <div className={`${styles.loadingScreen} ${progress >= 100 ? styles.fadeOut : ''}`}>
-            <div className={styles.content}>
-                <div className={styles.logoContainer}>
-                    <div className={styles.logo}>
-                        <span className={styles.logoText}>QG1o</span>
-                        <div className={styles.logoRing}></div>
-                        <div className={styles.logoRing2}></div>
-                    </div>
-                </div>
+      if (t < 1) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        setDone(true);
+        setTimeout(() => {
+          setVisible(false);
+          document.body.style.overflow = '';
+        }, 750);
+      }
+    };
 
-                <div className={styles.progressBar}>
-                    <div
-                        className={styles.progressFill}
-                        style={{ width: `${Math.min(progress, 100)}%` }}
-                    ></div>
-                </div>
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      document.body.style.overflow = '';
+    };
+  }, []);
 
-                <div className={styles.loadingText}>
-                    {progress < 100 ? 'Loading...' : 'Welcome!'}
-                </div>
-            </div>
+  if (!visible) return null;
+
+  return (
+    <div className={`${styles.screen} ${done ? styles.out : ''}`}>
+      <div className={styles.terminal}>
+        <div className={styles.bar}>
+          <span />
+          <span />
+          <span />
+          <p className={styles.path}>~/qg1o/portfolio</p>
         </div>
-    );
+        <div className={styles.body}>
+          <p className={styles.line}>
+            <span className={styles.prompt}>$</span> init secure session
+          </p>
+          {progress > 25 && (
+            <p className={styles.line}>
+              <span className={styles.arrow}>›</span> mounting aurora interface{' '}
+              <b className={styles.ok}>ok</b>
+            </p>
+          )}
+          {progress > 60 && (
+            <p className={styles.line}>
+              <span className={styles.arrow}>›</span> decrypting identity …
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className={styles.title}>
+        {display}
+        <span className={styles.caret} />
+      </div>
+
+      <div className={styles.progressRow}>
+        <div className={styles.track}>
+          <div className={styles.fill} style={{ width: `${progress}%` }} />
+        </div>
+        <span className={styles.percent}>{String(progress).padStart(3, '0')}%</span>
+      </div>
+    </div>
+  );
 }
 
 export default LoadingScreen;

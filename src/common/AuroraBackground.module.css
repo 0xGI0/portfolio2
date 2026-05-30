@@ -1,0 +1,91 @@
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.aurora span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.85;
+  will-change: transform;
+}
+
+.blob1 {
+  width: 48vw;
+  height: 48vw;
+  top: -12vw;
+  left: -8vw;
+  background: radial-gradient(circle at center, var(--aurora-1), transparent 65%);
+  animation: drift1 22s ease-in-out infinite;
+}
+
+.blob2 {
+  width: 42vw;
+  height: 42vw;
+  top: 22vh;
+  right: -10vw;
+  background: radial-gradient(circle at center, var(--aurora-3), transparent 65%);
+  animation: drift2 26s ease-in-out infinite;
+}
+
+.blob3 {
+  width: 46vw;
+  height: 46vw;
+  bottom: -16vw;
+  left: 28vw;
+  background: radial-gradient(circle at center, var(--aurora-2), transparent 65%);
+  animation: drift3 30s ease-in-out infinite;
+}
+
+/* Subtle technical grid */
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(circle at 50% 35%, #000 0%, transparent 78%);
+  -webkit-mask-image: radial-gradient(circle at 50% 35%, #000 0%, transparent 78%);
+  opacity: 0.5;
+}
+
+/* Darken edges for depth (dark theme only it reads strongest) */
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 50% 0%, transparent 40%, var(--bg) 100%);
+}
+
+@keyframes drift1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(8vw, 10vh) scale(1.15);
+  }
+}
+
+@keyframes drift2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1.1);
+  }
+  50% {
+    transform: translate(-10vw, 8vh) scale(0.9);
+  }
+}
+
+@keyframes drift3 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-6vw, -10vh) scale(1.2);
+  }
+}
