@@ -1,1 +1,209 @@
+/* ============================================================
+   MIDNIGHT AURORA — Design System
+   ============================================================ */
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Theme tokens ---------- */
+:root,
+[data-theme="dark"] {
+  --bg: #05060d;
+  --bg-soft: #0a0c18;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-strong: rgba(255, 255, 255, 0.07);
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.16);
+
+  --text: #e8ebf7;
+  --text-soft: #c2c7da;
+  --muted: #828aa6;
+
+  --accent-1: #22d3ee; /* cyan */
+  --accent-2: #818cf8; /* indigo */
+  --accent-3: #e879f9; /* magenta */
+  --grad: linear-gradient(120deg, #22d3ee 0%, #818cf8 45%, #e879f9 100%);
+  --grad-soft: linear-gradient(120deg, rgba(34, 211, 238, 0.18), rgba(232, 121, 249, 0.18));
+
+  --glow: rgba(129, 140, 248, 0.45);
+  --shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.75);
+  --ring: rgba(255, 255, 255, 0.85);
+
+  --aurora-1: rgba(34, 211, 238, 0.55);
+  --aurora-2: rgba(129, 140, 248, 0.55);
+  --aurora-3: rgba(232, 121, 249, 0.5);
+  --grain-opacity: 0.05;
+
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --bg: #eef1fb;
+  --bg-soft: #f6f8ff;
+  --surface: rgba(255, 255, 255, 0.55);
+  --surface-strong: rgba(255, 255, 255, 0.78);
+  --border: rgba(20, 24, 60, 0.1);
+  --border-strong: rgba(20, 24, 60, 0.18);
+
+  --text: #15172b;
+  --text-soft: #2c3050;
+  --muted: #5d6486;
+
+  --accent-1: #0891b2;
+  --accent-2: #6366f1;
+  --accent-3: #c026d3;
+  --grad: linear-gradient(120deg, #0891b2 0%, #6366f1 45%, #c026d3 100%);
+  --grad-soft: linear-gradient(120deg, rgba(8, 145, 178, 0.14), rgba(192, 38, 211, 0.14));
+
+  --glow: rgba(99, 102, 241, 0.35);
+  --shadow: 0 24px 60px -24px rgba(40, 50, 110, 0.35);
+  --ring: rgba(20, 24, 60, 0.7);
+
+  --aurora-1: rgba(8, 145, 178, 0.35);
+  --aurora-2: rgba(99, 102, 241, 0.32);
+  --aurora-3: rgba(192, 38, 211, 0.28);
+  --grain-opacity: 0.035;
+
+  color-scheme: light;
+}
+
+/* ---------- Base ---------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  cursor: none;
+  transition: background 700ms cubic-bezier(0.4, 0, 0.2, 1),
+    color 700ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#root {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px 120px;
+  z-index: 1;
+}
+
+/* ---------- Typography ---------- */
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Space Grotesk", "Inter", sans-serif;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: clamp(1.05rem, 2.4vw, 1.4rem);
+  font-weight: 500;
+  color: var(--text-soft);
+}
+
+p {
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  color: var(--text-soft);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------- Cursor visibility ---------- */
+a,
+button,
+input,
+textarea,
+select,
+.hover {
+  cursor: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  .hover {
+    cursor: auto;
+  }
+}
+
+/* ---------- Selection & scrollbar ---------- */
+::selection {
+  background: var(--accent-2);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-2);
+  background-clip: padding-box;
+}
+
+/* ---------- Film grain overlay ---------- */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

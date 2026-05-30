@@ -1,133 +1,91 @@
-/* Main cursor dot */
-.cursor {
-    width: 8px;
-    height: 8px;
-    background: linear-gradient(135deg, #9b7fd4, #b8d4f7);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 10000;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
-    mix-blend-mode: difference;
-    will-change: transform;
+.dot,
+.ring,
+.glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
 }
 
-.cursorPointer {
-    width: 4px;
-    height: 4px;
-    background: linear-gradient(135deg, #b8d4f7, #9b7fd4);
+/* Inverting center dot */
+.dot {
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  mix-blend-mode: difference;
+  z-index: 10000;
+  transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease;
 }
 
-/* Cursor ring */
-.cursorRing {
-    width: 32px;
-    height: 32px;
-    border: 2px solid rgba(155, 127, 212, 0.5);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                border-color 0.3s ease;
-    animation: ringPulse 2s ease-in-out infinite;
-    will-change: transform;
+.dot.pointer {
+  width: 0;
+  height: 0;
 }
 
-.cursorRingPointer {
-    width: 48px;
-    height: 48px;
-    border-color: rgba(184, 212, 247, 0.8);
-    animation: ringExpandPointer 0.3s ease forwards;
+.dot.down {
+  width: 14px;
+  height: 14px;
 }
 
-/* Glow effect */
-.cursorGlow {
-    width: 40px;
-    height: 40px;
-    background: radial-gradient(circle, rgba(155, 127, 212, 0.3) 0%, transparent 70%);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
-    filter: blur(10px);
-    animation: glowPulse 2s ease-in-out infinite;
-    will-change: transform;
+/* Trailing ring */
+.ring {
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--ring);
+  background: transparent;
+  z-index: 9999;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease,
+    background 0.3s ease, opacity 0.3s ease;
 }
 
-.cursorGlowPointer {
-    width: 60px;
-    height: 60px;
-    background: radial-gradient(circle, rgba(184, 212, 247, 0.4) 0%, transparent 70%);
+.ring.pointer {
+  width: 56px;
+  height: 56px;
+  border-color: transparent;
+  background: var(--grad-soft);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 
-/* Trail effect */
-.trail {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 9997;
-    transform-origin: center;
-    filter: blur(3px);
-    transition: opacity 0.3s ease;
-    will-change: transform, opacity;
-    box-shadow: 0 0 10px currentColor;
+.ring.down {
+  width: 26px;
+  height: 26px;
 }
 
-/* Animations */
-@keyframes ringPulse {
-    0%, 100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.5;
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.1);
-        opacity: 0.8;
-    }
+/* Spotlight glow */
+.glow {
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, var(--glow) 0%, transparent 60%);
+  filter: blur(8px);
+  opacity: 0.45;
+  mix-blend-mode: screen;
+  z-index: 9998;
+  transition: opacity 0.4s ease, width 0.4s ease, height 0.4s ease;
 }
 
-@keyframes ringExpandPointer {
-    to {
-        transform: translate(-50%, -50%) scale(1.05);
-    }
+.glow.pointer {
+  opacity: 0.75;
+  width: 320px;
+  height: 320px;
 }
 
-@keyframes glowPulse {
-    0%, 100% {
-        opacity: 0.6;
-    }
-    50% {
-        opacity: 1;
-    }
+.hidden {
+  opacity: 0 !important;
 }
 
-/* Dark theme adjustments */
-[data-theme="dark"] .cursor {
-    background: linear-gradient(135deg, #b8d4f7, #9b7fd4);
+[data-theme="light"] .glow {
+  mix-blend-mode: multiply;
+  opacity: 0.3;
 }
 
-[data-theme="dark"] .cursorRing {
-    border-color: rgba(184, 212, 247, 0.6);
-}
-
-[data-theme="dark"] .cursorGlow {
-    background: radial-gradient(circle, rgba(184, 212, 247, 0.35) 0%, transparent 70%);
-}
-
-/* Rainbow trail colors are set inline via JavaScript */
-
-/* Hide on mobile/touch devices */
 @media (hover: none) and (pointer: coarse) {
-    .cursor,
-    .cursorRing,
-    .cursorGlow,
-    .trail {
-        display: none;
-    }
+  .dot,
+  .ring,
+  .glow {
+    display: none;
+  }
 }

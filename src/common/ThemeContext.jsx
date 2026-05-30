@@ -8,9 +8,9 @@ export const ThemeProvider = ({children}) => {
     const [theme, setTheme] = useState(() => {
         // Sicherheitscheck für SSR/SSG
         if (typeof window !== 'undefined') {
-            return localStorage.getItem('theme') || 'light';
+            return localStorage.getItem('theme') || 'dark';
         }
-        return 'light';
+        return 'dark';
     });
     
     useEffect(() => {

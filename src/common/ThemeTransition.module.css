@@ -28,11 +28,11 @@
 }
 
 [data-theme="light"] .circle {
-    --transition-color: #d5e5f2;
+    --transition-color: #6366f1;
 }
 
 [data-theme="dark"] .circle {
-    --transition-color: #3d3b52;
+    --transition-color: #818cf8;
 }
 
 @keyframes spiralWipe {

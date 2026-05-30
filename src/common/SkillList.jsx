@@ -1,10 +1,12 @@
-function SkillList({ src, skill }) {
-    return (
-        <span> 
-            <img src={src} alt="Checkmark icon" />
-            <p>{skill}</p>
-        </span>
-    );
+import styles from './SkillList.module.css';
+
+function SkillList({ skill }) {
+  return (
+    <li className={`${styles.chip} hover`}>
+      <span className={styles.bullet} />
+      {skill}
+    </li>
+  );
 }
 
 export default SkillList;

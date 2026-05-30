@@ -1,205 +1,171 @@
-.loadingScreen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #c8e0fa 0%, #b8d4f7 50%, #d4c8f7 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 99999;
-    animation: fadeIn 0.3s ease;
+.screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 34px;
+  padding: 24px;
+  background:
+    radial-gradient(60vw 60vw at 25% 20%, rgba(34, 211, 238, 0.12), transparent 60%),
+    radial-gradient(50vw 50vw at 80% 80%, rgba(232, 121, 249, 0.12), transparent 60%),
+    #05060d;
+  animation: fadeIn 0.4s ease;
 }
 
-.fadeOut {
-    animation: fadeOutScale 0.6s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+.out {
+  animation: fadeOut 0.75s cubic-bezier(0.7, 0, 0.84, 0) forwards;
 }
 
-.content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 40px;
+/* Terminal card */
+.terminal {
+  width: min(440px, 90vw);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
 }
 
-.logoContainer {
-    position: relative;
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.logo {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: float 3s ease-in-out infinite;
+.bar span {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+}
+.bar span:nth-child(1) {
+  background: #ff5f57;
+}
+.bar span:nth-child(2) {
+  background: #febc2e;
+}
+.bar span:nth-child(3) {
+  background: #28c840;
 }
 
-.logoText {
-    font-size: 32px;
-    font-weight: 800;
-    color: #2d2d2d;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    z-index: 2;
-    animation: textPulse 2s ease-in-out infinite;
+.path {
+  margin-left: auto;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  color: rgba(232, 235, 247, 0.5);
 }
 
-.logoRing {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border: 3px solid #9b7fd4;
-    border-radius: 50%;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    animation: ringRotate 2s linear infinite;
+.body {
+  padding: 18px 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 110px;
 }
 
-.logoRing2 {
-    position: absolute;
-    width: 130%;
-    height: 130%;
-    border: 2px solid #b8d4f7;
-    border-radius: 50%;
-    border-bottom-color: transparent;
-    border-left-color: transparent;
-    animation: ringRotate2 3s linear infinite reverse;
-    opacity: 0.6;
+.line {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.82rem;
+  color: rgba(232, 235, 247, 0.82);
+  white-space: nowrap;
+  animation: typeIn 0.35s ease;
 }
 
-.progressBar {
-    width: 250px;
-    height: 4px;
-    background: rgba(155, 127, 212, 0.2);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(155, 127, 212, 0.2);
+.prompt {
+  color: #22d3ee;
+  font-weight: 700;
+}
+.arrow {
+  color: #818cf8;
+  font-weight: 700;
+}
+.ok {
+  color: #28c840;
+  font-weight: 700;
 }
 
-.progressFill {
-    height: 100%;
-    background: linear-gradient(90deg, #9b7fd4, #b8d4f7, #9b7fd4);
-    background-size: 200% 100%;
-    border-radius: 10px;
-    transition: width 0.3s ease;
-    animation: progressShine 1.5s ease-in-out infinite;
-    box-shadow: 0 0 10px rgba(155, 127, 212, 0.5);
+/* Decrypting title */
+.title {
+  position: relative;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(3rem, 12vw, 6rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  background: linear-gradient(120deg, #22d3ee, #818cf8, #e879f9);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.loadingText {
-    font-size: 16px;
-    font-weight: 600;
-    color: #2d2d2d;
-    letter-spacing: 2px;
-    animation: textFade 1.5s ease-in-out infinite;
+.caret {
+  display: inline-block;
+  width: 4px;
+  height: 0.9em;
+  background: #818cf8;
+  -webkit-text-fill-color: initial;
+  animation: blink 1s steps(1) infinite;
 }
 
-/* Animations */
+/* Progress */
+.progressRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: min(440px, 90vw);
+}
+
+.track {
+  flex: 1;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #22d3ee, #818cf8, #e879f9);
+  box-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
+}
+
+.percent {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  color: rgba(232, 235, 247, 0.6);
+  min-width: 42px;
+}
+
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+  from {
+    opacity: 0;
+  }
 }
-
-@keyframes fadeOutScale {
-    to {
-        opacity: 0;
-        transform: scale(1.1);
-    }
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(1.04);
+    filter: blur(8px);
+  }
 }
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
+@keyframes typeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
 }
-
-@keyframes textPulse {
-    0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.8;
-        transform: scale(1.05);
-    }
-}
-
-@keyframes ringRotate {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes ringRotate2 {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes progressShine {
-    0%, 100% {
-        background-position: 0% 0%;
-    }
-    50% {
-        background-position: 100% 0%;
-    }
-}
-
-@keyframes textFade {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-}
-
-/* Dark theme */
-[data-theme="dark"] .loadingScreen {
-    background: linear-gradient(135deg, #2d2b3e 0%, #3d3b52 50%, #4a3d52 100%);
-}
-
-[data-theme="dark"] .logoText {
-    color: #f0f0f0;
-}
-
-[data-theme="dark"] .logoRing {
-    border-color: #b8d4f7;
-    border-top-color: transparent;
-    border-right-color: transparent;
-}
-
-[data-theme="dark"] .logoRing2 {
-    border-color: #9b7fd4;
-    border-bottom-color: transparent;
-    border-left-color: transparent;
-}
-
-[data-theme="dark"] .progressBar {
-    background: rgba(184, 212, 247, 0.2);
-}
-
-[data-theme="dark"] .progressFill {
-    background: linear-gradient(90deg, #b8d4f7, #9b7fd4, #b8d4f7);
-    box-shadow: 0 0 10px rgba(184, 212, 247, 0.5);
-}
-
-[data-theme="dark"] .loadingText {
-    color: #f0f0f0;
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }
