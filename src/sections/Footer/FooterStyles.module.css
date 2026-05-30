@@ -1,70 +1,7 @@
 .container {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
-.line {
-  height: 1px;
-  width: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--border-strong),
-    transparent
-  );
-}
-
-.inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font-family: "Space Grotesk", sans-serif;
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: var(--text);
-}
-
-.dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--grad);
-  box-shadow: 0 0 10px var(--glow);
-}
-
-.copy {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
-.links {
-  display: flex;
-  gap: 20px;
-}
-
-.links a {
-  font-size: 0.9rem;
-  color: var(--text-soft);
-  transition: color 0.3s ease;
-}
-
-.links a:hover {
-  color: var(--accent-2);
-}
-
-@media (max-width: 600px) {
-  .inner {
-    flex-direction: column;
     text-align: center;
-  }
+    p {
+        font-size: 16px;
+        color: var(--footer-text-color);
+    }
 }

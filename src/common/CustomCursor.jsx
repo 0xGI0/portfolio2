@@ -1,83 +1,134 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import styles from './CustomCursor.module.css';
 
 function CustomCursor() {
-  const dotRef = useRef(null);
-  const ringRef = useRef(null);
-  const glowRef = useRef(null);
-  const target = useRef({ x: -100, y: -100 });
-  const ringPos = useRef({ x: -100, y: -100 });
-  const [pointer, setPointer] = useState(false);
-  const [down, setDown] = useState(false);
-  const [hidden, setHidden] = useState(true);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [isPointer, setIsPointer] = useState(false);
+    const [trail, setTrail] = useState([]);
+    const rafId = useRef(null);
+    const lastTrailTime = useRef(0);
 
-  useEffect(() => {
-    let raf;
+    useEffect(() => {
+        let animationId;
 
-    const move = (e) => {
-      target.current = { x: e.clientX, y: e.clientY };
-      setHidden(false);
-      if (dotRef.current) {
-        dotRef.current.style.transform =
-          `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
-      }
-    };
+        const handleMouseMove = (e) => {
+            // Use requestAnimationFrame for smooth updates
+            if (rafId.current) {
+                cancelAnimationFrame(rafId.current);
+            }
 
-    const over = (e) => {
-      const t = e.target;
-      const clickable =
-        t.closest &&
-        !!(t.closest('a') ||
-          t.closest('button') ||
-          t.closest('.hover') ||
-          t.closest('input') ||
-          t.closest('textarea'));
-      setPointer(clickable);
-    };
+            rafId.current = requestAnimationFrame(() => {
+                setPosition({ x: e.clientX, y: e.clientY });
 
-    const out = () => setHidden(true);
-    const onDown = () => setDown(true);
-    const onUp = () => setDown(false);
+                // Throttle trail creation (only every 40ms for smoother rainbow)
+                const now = Date.now();
+                if (now - lastTrailTime.current > 40) {
+                    lastTrailTime.current = now;
+                    setTrail(prev => {
+                        const newTrail = [...prev, {
+                            x: e.clientX,
+                            y: e.clientY,
+                            id: now
+                        }];
+                        // Keep last 12 positions for fuller rainbow effect
+                        return newTrail.slice(-12);
+                    });
+                }
+            });
+        };
 
-    const loop = () => {
-      ringPos.current.x += (target.current.x - ringPos.current.x) * 0.16;
-      ringPos.current.y += (target.current.y - ringPos.current.y) * 0.16;
-      const transform =
-        `translate(${ringPos.current.x}px, ${ringPos.current.y}px) translate(-50%, -50%)`;
-      if (ringRef.current) ringRef.current.style.transform = transform;
-      if (glowRef.current) glowRef.current.style.transform = transform;
-      raf = requestAnimationFrame(loop);
-    };
-    loop();
+        const handleMouseOver = (e) => {
+            const target = e.target;
+            const isClickable =
+                target.tagName === 'A' ||
+                target.tagName === 'BUTTON' ||
+                target.classList.contains('hover') ||
+                target.closest('a') ||
+                target.closest('button');
+            setIsPointer(isClickable);
+        };
 
-    window.addEventListener('mousemove', move);
-    document.addEventListener('mouseover', over);
-    document.addEventListener('mouseleave', out);
-    window.addEventListener('mousedown', onDown);
-    window.addEventListener('mouseup', onUp);
+        window.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseover', handleMouseOver);
 
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener('mousemove', move);
-      document.removeEventListener('mouseover', over);
-      document.removeEventListener('mouseleave', out);
-      window.removeEventListener('mousedown', onDown);
-      window.removeEventListener('mouseup', onUp);
-    };
-  }, []);
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseover', handleMouseOver);
+            if (rafId.current) {
+                cancelAnimationFrame(rafId.current);
+            }
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        };
+    }, []);
 
-  const cls = (base) =>
-    [base, pointer && styles.pointer, down && styles.down, hidden && styles.hidden]
-      .filter(Boolean)
-      .join(' ');
+    // Clean up trail points automatically
+    useEffect(() => {
+        if (trail.length > 0) {
+            const timer = setTimeout(() => {
+                setTrail(prev => prev.slice(1));
+            }, 200); // Changed from 100ms to 200ms for longer visibility
+            return () => clearTimeout(timer);
+        }
+    }, [trail]);
 
-  return (
-    <>
-      <div ref={glowRef} className={cls(styles.glow)} />
-      <div ref={ringRef} className={cls(styles.ring)} />
-      <div ref={dotRef} className={cls(styles.dot)} />
-    </>
-  );
+    // Rainbow colors for trail
+    const rainbowColors = [
+        '#ff006e', // Pink
+        '#fb5607', // Orange
+        '#ffbe0b', // Yellow
+        '#06ffa5', // Mint
+        '#3a86ff', // Blue
+        '#8338ec', // Purple
+        '#ff006e', // Pink (loop)
+    ];
+
+    return (
+        <>
+            {/* Trail effect */}
+            {trail.map((point, index) => (
+                <div
+                    key={point.id}
+                    className={styles.trail}
+                    style={{
+                        left: `${point.x}px`,
+                        top: `${point.y}px`,
+                        opacity: (index / trail.length) * 0.8,
+                        transform: `translate(-50%, -50%) scale(${0.4 + (index / trail.length) * 0.6})`,
+                        background: rainbowColors[index % rainbowColors.length]
+                    }}
+                />
+            ))}
+
+            {/* Main cursor dot */}
+            <div
+                className={`${styles.cursor} ${isPointer ? styles.cursorPointer : ''}`}
+                style={{
+                    left: `${position.x}px`,
+                    top: `${position.y}px`
+                }}
+            />
+
+            {/* Cursor ring */}
+            <div
+                className={`${styles.cursorRing} ${isPointer ? styles.cursorRingPointer : ''}`}
+                style={{
+                    left: `${position.x}px`,
+                    top: `${position.y}px`
+                }}
+            />
+
+            {/* Glow effect */}
+            <div
+                className={`${styles.cursorGlow} ${isPointer ? styles.cursorGlowPointer : ''}`}
+                style={{
+                    left: `${position.x}px`,
+                    top: `${position.y}px`
+                }}
+            />
+        </>
+    );
 }
 
 export default CustomCursor;
